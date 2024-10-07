@@ -33,7 +33,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav">
-                        <li><a class="nav-link nav_item" href="{{url("/")}}">Home</a></li>
+                        <li><a class="nav-link nav_item" href="{{url("/HomePage")}}">Home</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle nav-link" href="#" data-bs-toggle="dropdown">Products</a>
                             <div class="dropdown-menu">
@@ -68,7 +68,8 @@
         hideLoader();
         $("#CategoryItem").empty();
         res.data['data'].forEach((item,i)=>{
-            let EachItem = `<li><a class="nav-item nav-link nav_item " href="#">${item['categoryName']}</li>`;
+            let EachItem = `<li><a class="nav-item nav-link nav_item" href="/ProductByCategoryPage?id=${item['id']}&name=${item['categoryName']}">${item['categoryName']}</a></li>`;
+
             $("#CategoryItem").append(EachItem);
         });
 

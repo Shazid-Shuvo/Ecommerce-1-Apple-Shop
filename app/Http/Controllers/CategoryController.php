@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
 
+
     public function CreateCategory(Request $request):JsonResponse{
 
         $user_id=$request->header('id');

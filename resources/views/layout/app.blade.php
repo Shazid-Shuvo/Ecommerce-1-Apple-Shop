@@ -26,6 +26,9 @@
     <script src="{{asset('js/axios.min.js')}}"></script>
     <script src="{{asset('js/config.js')}}"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+
     <link href="{{asset('assets/css/animate.min.css')}}" rel="stylesheet" />
     <link href="{{asset('assets/css/fontawesome.css')}}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('assets/css/all.min.css')}}">

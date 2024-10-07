@@ -26,7 +26,7 @@
             let EachItem= `<div class="brand_allign">
                 <div class="item">
                     <div class="categories_box">
-                        <a href="/by-brand?id=${item['id']}">
+                        <a href="/ProductByBrandPage?id=${item['id']}">
                             <img src="${item['brandImg']}" alt="cat_img1"/>
                             <span>${item['brandName']}</span>
                         </a>
