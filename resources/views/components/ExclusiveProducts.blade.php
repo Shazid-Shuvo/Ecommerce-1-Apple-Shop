@@ -31,14 +31,10 @@
                 <div class="tab-pane fade show active" id="Popular" role="tabpanel" aria-labelledby="arrival-tab">
                     <div id="PopularItem" class="row shop_container">
 
-
-
-
                     </div>
                 </div>
                 <div class="tab-pane fade" id="New" role="tabpanel" aria-labelledby="sellers-tab">
                     <div id="NewItem"  class="row shop_container">
-
 
                     </div>
                 </div>
@@ -62,7 +58,6 @@
     </div>
 </div>
 
-
 <script>
 
     async function Popular() {
@@ -74,17 +69,17 @@
             let EachItem = `<div class="col-lg-3 col-md-4 col-6">
                                 <div class="product">
                                     <div class="product_img">
-                                        <a href="#">
+                                        <a href="/ProductDetailsPage?id=${item['id']}">
                                             <img src="${item['image']}" alt="product_img9">
                                         </a>
                                         <div class="product_action_box">
                                             <ul class="list_none pr_action_btn">
-                                                <li><a href="/details?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                                <li><a href="/ProductDetailsPage?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product_info">
-                                        <h6 class="product_title"><a  href="/details?id=${item['id']}">${item['title']}</a></h6>
+                                        <h6 class="product_title"><a  href="/ProductDetailsPage?id=${item['id']}">${item['title']}</a></h6>
                                         <div class="product_price">
                                             <span class="price">$ ${item['price']}</span>
                                         </div>
@@ -107,19 +102,19 @@
                 let EachItem = `<div class="col-lg-3 col-md-4 col-6">
                                 <div class="product">
                                     <div class="product_img">
-                                        <a href="#">
+                                        <a href="/ProductDetailsPage?id=${item['id']}">
                                             <img src="${item['image']}" alt="product_img9">
                                         </a>
                                         <div class="product_action_box">
                                             <ul class="list_none pr_action_btn">
 
-                                                <li><a href="/details?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                                <li><a href="/ProductDetailsPage?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
 
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product_info">
-                                        <h6 class="product_title"><a href="/details?id=${item['id']}">${item['name']}</a></h6>
+                                        <h6 class="product_title"><a href="/ProductDetailsPage?id=${item['id']}">${item['name']}</a></h6>
                                         <div class="product_price">
                                             <span class="price">$ ${item['price']}</span>
                                         </div>
@@ -144,18 +139,18 @@
                                 <div class="product">
                                     <div class="product_img">
                                         <a href="#">
-                                            <img src="${item['image']}" alt="product_img9">
+                                            <img src="/ProductDetailsPage?id=${item['id']}" alt="product_img9">
                                         </a>
                                         <div class="product_action_box">
                                             <ul class="list_none pr_action_btn">
 
-                                                <li><a href="/details?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                                <li><a href="/ProductDetailsPage?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
 
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product_info">
-                                        <h6 class="product_title"><a href="/details?id=${item['id']}">${item['title']}</a></h6>
+                                        <h6 class="product_title"><a href="/ProductDetailsPage?id=${item['id']}">${item['title']}</a></h6>
                                         <div class="product_price">
                                             <span class="price">$ ${item['price']}</span>
                                         </div>
@@ -181,19 +176,19 @@
                 let EachItem = `<div class="col-lg-3 col-md-4 col-6">
                                 <div class="product">
                                     <div class="product_img">
-                                        <a href="#">
+                                        <a href="/ProductDetailsPage?id=${item['id']}">
                                             <img src="${item['image']}" alt="product_img9">
                                         </a>
                                         <div class="product_action_box">
                                             <ul class="list_none pr_action_btn">
 
-                                                <li><a href="/details?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                                <li><a href="/ProductDetailsPage?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
 
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product_info">
-                                        <h6 class="product_title"><a href="/details?id=${item['id']}">${item['title']}</a></h6>
+                                        <h6 class="product_title"><a href="/ProductDetailsPage?id=${item['id']}">${item['title']}</a></h6>
                                         <div class="product_price">
                                             <span class="price">$ ${item['price']}</span>
                                         </div>
@@ -218,19 +213,19 @@
                 let EachItem = `<div class="col-lg-3 col-md-4 col-6">
                                 <div class="product">
                                     <div class="product_img">
-                                        <a href="#">
+                                        <a href="/ProductDetailsPage?id=${item['id']}">
                                             <img src="${item['image']}" alt="product_img9">
                                         </a>
                                         <div class="product_action_box">
                                             <ul class="list_none pr_action_btn">
 
-                                                <li><a href="/details?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
+                                                <li><a href="/ProductDetailsPage?id=${item['id']}" class="popup-ajax"><i class="icon-magnifier-add"></i></a></li>
 
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product_info">
-                                        <h6 class="product_title"><a href="/details?id=${item['id']}">${item['title']}</a></h6>
+                                        <h6 class="product_title"><a href="/ProductDetailsPage?id=${item['id']}">${item['title']}</a></h6>
                                         <div class="product_price">
                                             <span class="price">$ ${item['price']}</span>
                                         </div>

@@ -18,9 +18,8 @@ class ProductController extends Controller
     function ProductByCategoryPage(){
         return view('pages.product-by-category-page');
     }
-
-    function ProductByBrandPage(){
-        return view('pages.product-by-brand-page');
+    function ProductDetailsPage(){
+        return view('pages.product-details-page');
     }
   public function ListProductByCategory(Request $request):JsonResponse{
        $data=Product::where('category_id',$request->id)->with('brand','category')->get();

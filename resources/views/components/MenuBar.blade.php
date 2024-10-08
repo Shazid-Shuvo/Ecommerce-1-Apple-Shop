@@ -13,7 +13,7 @@
                 <div class="col-md-6">
                     <div class="text-center text-md-end">
                         <ul class="header_list">
-                            <li><a href="/policy?type=about">About</a></li>
+                            <li><a href="/PolicyPage?type=about">About</a></li>
                             <li><a href="">Account</a></li>
                         </ul>
                     </div>

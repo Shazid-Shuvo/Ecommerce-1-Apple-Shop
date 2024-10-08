@@ -23,10 +23,10 @@
                     <div class="widget">
                         <h6 class="widget_title">Useful Links</h6>
                         <ul class="widget_links">
-                            <li><a href="/policy?type=about">About Us</a></li>
-                            <li><a href="/policy?type=how to buy">How to Buy</a></li>
-                            <li><a href="/policy?type=contact">Contact</a></li>
-                            <li><a href="/policy?type=complain">Complain</a></li>
+                            <li><a href="/PolicyPage?type=about">About Us</a></li>
+                            <li><a href="/PolicyPage?type=how to buy">How to Buy</a></li>
+                            <li><a href="/PolicyPage?type=contact">Contact</a></li>
+                            <li><a href="/PolicyPage?type=complain">Complain</a></li>
                         </ul>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                     <div class="widget">
                         <h6 class="widget_title">Legals</h6>
                         <ul class="widget_links">
-                            <li><a href="/policy?type=refund">Refund Policy</a></li>
-                            <li><a href="/policy?type=terms">Terms & Condition</a></li>
+                            <li><a href="/PolicyPage?type=refund">Refund Policy</a></li>
+                            <li><a href="/PolicyPage?type=terms">Terms & Condition</a></li>
                         </ul>
                     </div>
                 </div>

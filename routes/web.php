@@ -113,8 +113,8 @@ Route::post("/PaymentFail",[InvoiceController::class,'PaymentFail']);
 Route::get("/HomePage",[HomeController::class,'HomePage']);
 Route::get("/ProductByCategoryPage",[ProductController::class,'ProductByCategoryPage']);
 Route::get("/ProductByBrandPage",[ProductController::class,'ProductByCategoryPage']);
-
-
+Route::get("/PolicyPage",[PolicyController::class,'PolicyPage']);
+Route::get("/ProductDetailsPage",[ProductController::class,'ProductDetailsPage']);
 
 
 
