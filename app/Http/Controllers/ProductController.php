@@ -15,6 +15,13 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    function CartListPage(){
+        return view('pages.cart-list-page');
+    }
+
+    function WishListPage(){
+        return view('pages.wish-list-page');
+    }
     function ProductByCategoryPage(){
         return view('pages.product-by-category-page');
     }
@@ -97,43 +104,57 @@ class ProductController extends Controller
         $user_id = $request->header('id');
         $data=  ProductWish::where([
             'user_id'=>$user_id,
-            'product_id'=>$request->input('product_id')]
+            'product_id'=>$request->product_id]
         )->delete();
         return ResponseHelper::out('success',$data,200);
     }
 
-    public function CreateCartList(Request $request):JsonResponse
+        public function CreateCartList(Request $request)
     {
+        // Get user_id from header and validate inputs
         $user_id = $request->header('id');
         $product_id = $request->input('product_id');
         $color = $request->input('color');
         $size = $request->input('size');
         $qty = $request->input('qty');
-        $Price = 0;
-        $productDetails = Product::whrere('id', '=', $product_id)->first();
+
+        // Validate required fields
+        if (!$user_id || !$product_id || !$qty) {
+            return ResponseHelper::out('failed', 'Missing required fields', 400);
+        }
+
+        // Retrieve product details
+        $productDetails = Product::where('id', '=', $product_id)->first();
+        if (!$productDetails) {
+            return ResponseHelper::out('failed', 'Product not found', 404);
+        }
         if ($productDetails->discount) {
-            $Price = $productDetails->discount_price;
+            $Price =$productDetails->price - $productDetails->discount_price;
         } else {
             $Price = $productDetails->price;
         }
         $totalPrice = $qty * $Price;
 
-        $data=  ProductCart::updateOrCreate(
+        // Insert or update the product in the cart
+        $data = ProductCart::updateOrCreate(
             [
                 'user_id' => $user_id,
-                'product_id'=>$product_id
+                'product_id' => $product_id
             ],
             [
                 'user_id' => $user_id,
-                'product_id'=>$product_id,
-                'color'=>$color,
-                'qty'=>$qty,
-                'size'=>$size,
-                'price'=>$Price
-            ]);
-        return ResponseHelper::out('success',$data,200);
+                'product_id' => $product_id,
+                'color' => $color,
+                'qty' => $qty,
+                'size' => $size,
+                'price' => $totalPrice
+            ]
+        );
+
+        // Return success response
 
     }
+
 
     public function ProductCartList(Request $request):JsonResponse{
         $user_id = $request->header('id');
@@ -143,9 +164,9 @@ class ProductController extends Controller
 
     public function DeleteCartList(Request $request):JsonResponse{
         $user_id = $request->header('id');
-        $data=  ProductWish::where([
+        $data=  ProductCart::where([
                 'user_id'=>$user_id,
-                'product_id'=>$request->input('product_id')]
+                'product_id'=>$request->product_id]
         )->delete();
         return ResponseHelper::out('success',$data,200);
     }

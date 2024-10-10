@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -12,7 +11,7 @@ use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Support\Facades\Route;
 
 //Page route for login and reg
-
+Route::get('/', [userController::class,'dash']);
 Route::get('/userRegistration', [userController::class,'userRegistrationPage']);
 Route::get('/userLogin', [userController::class,'userLoginPage']);
 Route::get('/sendOtp', [userController::class,'sendOtpCodePage']);
@@ -63,15 +62,15 @@ Route::post("/CreateProductReview",[ProductController::class,'CreateReview'])
 
 //Product Wish
 
-Route::get("/ProductWishList",[ProductController::class,'ProductWishList'])->middleware(TokenVerificationMiddleware::class);;
-Route::post("/CreateWishList",[ProductController::class,'CreateWishList'])->middleware(TokenVerificationMiddleware::class);;
-Route::post("/DeleteWishList",[ProductController::class,'DeleteWishList'])->middleware(TokenVerificationMiddleware::class);;
+Route::get("/ProductWishList",[ProductController::class,'ProductWishList'])->middleware(TokenVerificationMiddleware::class);
+Route::post("/CreateWishList",[ProductController::class,'CreateWishList'])->middleware(TokenVerificationMiddleware::class);
+Route::post("/DeleteWishList/{product_id}",[ProductController::class,'DeleteWishList'])->middleware(TokenVerificationMiddleware::class);
 
 //Product CArt
 
-Route::get("/ProductCartList",[ProductController::class,'ProductCartList'])->middleware(TokenVerificationMiddleware::class);;
-Route::post("/CreateCartList",[ProductController::class,'CreateCartList'])->middleware(TokenVerificationMiddleware::class);;
-Route::post("/DeleteWishList",[ProductController::class,'DeleteWishList'])->middleware(TokenVerificationMiddleware::class);;
+Route::get("/ProductCartList",[ProductController::class,'ProductCartList'])->middleware(TokenVerificationMiddleware::class);
+Route::post("/CreateCartList",[ProductController::class,'CreateCartList'])->middleware(TokenVerificationMiddleware::class);
+Route::post("/DeleteCartList/{product_id}",[ProductController::class,'DeleteCartList'])->middleware(TokenVerificationMiddleware::class);
 
 //sliders
 
@@ -110,13 +109,13 @@ Route::post("/PaymentFail",[InvoiceController::class,'PaymentFail']);
 
 //Page Route
 
-Route::get("/HomePage",[HomeController::class,'HomePage']);
-Route::get("/ProductByCategoryPage",[ProductController::class,'ProductByCategoryPage']);
-Route::get("/ProductByBrandPage",[ProductController::class,'ProductByCategoryPage']);
-Route::get("/PolicyPage",[PolicyController::class,'PolicyPage']);
-Route::get("/ProductDetailsPage",[ProductController::class,'ProductDetailsPage']);
-
-
+Route::get("/HomePage",[HomeController::class,'HomePage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/ProductByCategoryPage",[ProductController::class,'ProductByCategoryPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/ProductByBrandPage",[ProductController::class,'ProductByCategoryPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/PolicyPage",[PolicyController::class,'PolicyPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/ProductDetailsPage",[ProductController::class,'ProductDetailsPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/WishListPage",[ProductController::class,'WishListPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/CartListPage",[ProductController::class,'CartListPage'])->middleware(TokenVerificationMiddleware::class);
 
 //Logout
 Route::get('/logout',[UserController::class,'UserLogout']);

@@ -27,4 +27,5 @@ class TokenVerificationMiddleware
             return $next($request);
         }
     }
+
 }

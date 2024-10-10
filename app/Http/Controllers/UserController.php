@@ -13,6 +13,9 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    function dash():View{
+        return view('pages.dash-page');
+    }
     function userRegistrationPage():View{
         return view('pages.registration-page');
     }
@@ -54,7 +57,7 @@ class UserController extends Controller
             ->select('id')->first();
 
         if($count!==null){
-            $token=JWTToken::createToken($request->input('email'),$count->id);
+            $token=JWTToken::CreateToken($request->input('email'),$count->id);
             return response()->json([
                 'status'=>'success',
                 'message'=>'User login successful'

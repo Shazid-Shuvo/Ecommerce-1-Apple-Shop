@@ -15,6 +15,7 @@
                         <ul class="header_list">
                             <li><a href="/PolicyPage?type=about">About</a></li>
                             <li><a href="">Account</a></li>
+                            <li><button class="btn btn-danger btn-sm mt-2"><a href="/logout">Logout</a></button> </li>
                         </ul>
                     </div>
                 </div>
@@ -42,8 +43,8 @@
                                 </ul>
                             </div>
                         </li>
-                        <li><a class="nav-link nav_item" href="{{url("/wish")}}"><i class="ti-heart"></i> Wish</a></li>
-                        <li><a class="nav-link nav_item" href="{{url("/")}}"><i class="linearicons-cart"></i> Cart </a></li>
+                        <li><a class="nav-link nav_item" href="{{url("/WishListPage")}}"><i class="ti-heart"></i> Wish</a></li>
+                        <li><a class="nav-link nav_item" href="{{url("/CartListPage")}}"><i class="linearicons-cart"></i> Cart </a></li>
                         <li><a href="javascript:void(0);" class="nav-link search_trigger"><i class="linearicons-magnifier"></i> Search</a>
                             <div class="search_wrap">
                                 <span class="close-search"><i class="ion-ios-close-empty"></i></span>

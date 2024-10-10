@@ -67,8 +67,22 @@
 
 <script>
 
+
+    $('.plus').on('click', function() {
+        if ($(this).prev().val()) {
+            $(this).prev().val(+$(this).prev().val() + 1);
+        }
+    });
+    $('.minus').on('click', function() {
+        if ($(this).next().val() > 1) {
+            $(this).next().val(+$(this).next().val() - 1);
+        }
+    });
+
         let searchParams = new URLSearchParams(window.location.search);
         let id = searchParams.get('id');
+
+
         async function productDetails() {
             showLoader();
             let res = await axios.get("/ProductDetailsById/"+id);
@@ -120,4 +134,62 @@
             });
 
     }
+    async function AddToWishList(){
+    try {
+        showLoader();
+        let res = await axios.post("/CreateWishList",{
+                "product_id":id,
+            });
+        hideLoader();
+            if(res.status===200){
+                successToast("Request Successful")
+            }
+
+    } catch (e) {
+        if (e.response.status === 401) {
+            sessionStorage.setItem("last_location", window.location.href)
+            window.location.href = "/login-page"
+        }
+    }
+
+    }
+
+    async function AddToCart(){
+        try {
+            let p_size=document.getElementById('p_size').value;
+            let p_color=document.getElementById('p_color').value;
+            let p_qty=document.getElementById('p_qty').value;
+
+            if(p_size.length===0){
+                errorToast("Product Size Required !");
+            }
+            else if(p_color.length===0){
+                errorToast("Product Color Required !");
+            }
+            else if(p_qty===0){
+                errorToast("Product Qty Required !");
+            }
+            else {
+                showLoader();
+                let res = await axios.post("/CreateCartList",{
+                    "product_id":id,
+                    "color":p_color,
+                    "size":p_size,
+                    "qty":p_qty
+                });
+                hideLoader();
+                if(res.status===200){
+                    successToast("Request Successful")
+                }
+            }
+
+        } catch (e) {
+            if (e.response.status === 401) {
+                sessionStorage.setItem("last_location", window.location.href)
+                window.location.href = "/login-page"
+            }
+        }
+
+    }
+
 </script>
