@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -105,8 +107,6 @@ Route::post("/PaymentSuccess",[InvoiceController::class,'PaymentSuccess']);
 Route::post("/PaymentCancel",[InvoiceController::class,'PaymentCancel']);
 Route::post("/PaymentFail",[InvoiceController::class,'PaymentFail']);
 
-
-
 //Page Route
 
 Route::get("/HomePage",[HomeController::class,'HomePage'])->middleware(TokenVerificationMiddleware::class);
@@ -116,6 +116,20 @@ Route::get("/PolicyPage",[PolicyController::class,'PolicyPage'])->middleware(Tok
 Route::get("/ProductDetailsPage",[ProductController::class,'ProductDetailsPage'])->middleware(TokenVerificationMiddleware::class);
 Route::get("/WishListPage",[ProductController::class,'WishListPage'])->middleware(TokenVerificationMiddleware::class);
 Route::get("/CartListPage",[ProductController::class,'CartListPage'])->middleware(TokenVerificationMiddleware::class);
+Route::get("/Profile",[ProfileController::class,'ProfilePage'])->middleware(TokenVerificationMiddleware::class);
 
+
+//Admin Routes
+
+   //admin API
+
+    Route::post('/admin-login', [AdminController::class,'AdminLogin']);
+    Route::post('/AddProduct', [AdminController::class,'AddProduct']);
+
+//Admin Pages
+
+    Route::get('/adminLogin', [AdminController::class,'AdminLoginPage']);
+    Route::get('/AdminDashboard', [AdminController::class,'AdminDashboard'])->middleware(TokenVerificationMiddleware::class);;
+    Route::get('/AddProduct', [AdminController::class,'AddProductPage'])->middleware(TokenVerificationMiddleware::class);;
 //Logout
-Route::get('/logout',[UserController::class,'UserLogout']);
+Route::get('/logout',[UserController::class,'userLogout']);

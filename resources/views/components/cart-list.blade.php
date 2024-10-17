@@ -111,5 +111,35 @@
     }
 
 
+    async function CheckOut(){
+
+
+        showLoader();
+        $("#paymentList").empty();
+        let res=await axios.post("/CreateInvoice");
+
+      hideLoader();
+
+
+        if(res.status===200) {
+
+            $("#paymentMethodModal").modal('show');
+
+            res.data['data'][0]['paymentMethod'].forEach((item,i)=>{
+                let EachItem=`<tr>
+                                <td><img class="w-50" src=${item['logo']} alt="product"></td>
+                                <td><p>${item['name']}</p></td>
+                                <td><a class="btn btn-danger btn-sm" href="${item['redirectGatewayURL']}">Pay</a></td>
+                            </tr>`
+                $("#paymentList").append(EachItem);
+            })
+
+        }
+        else{
+            alert("Request Fail");
+        }
+
+    }
+
 
 </script>

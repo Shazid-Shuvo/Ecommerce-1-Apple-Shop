@@ -8,7 +8,9 @@ use App\Mail\OTPMail;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -35,41 +37,85 @@ class UserController extends Controller
     public function userRegistration(Request $request)
     {
         try {
-            User::create([
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
+            // Validate incoming request
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:4'
             ]);
-            return response()->json([
-                'status'=>'success',
-                'message'=>'User registration successful'
-            ],'200');
-        }
-        catch (Exception $e){
-            return response()->json([
-                'status'=>'failed',
-                'message'=>'User registration failed'
-            ],'200');
-        }
-    }
-    function userLogin(Request $request){
-        $count=User::where('email','=',$request->input('email'))
-            ->where('password','=',$request->input('password'))
-            ->select('id')->first();
 
-        if($count!==null){
-            $token=JWTToken::CreateToken($request->input('email'),$count->id);
+            // If validation fails, return JSON error response
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
+
+            // Hash password and set role
+            $email = $request->input('email');
+            $password = Hash::make($request->input('password'));
+            $role = 'user';
+            $otp=0;
+
+            // Create user record in the database
+            User::create([
+                'email' => $email,
+                'password' => $password,
+                'role' => $role , // Ensure 'role' is fillable
+                'otp'=>$otp
+            ]);
+
+            // Return success response
             return response()->json([
-                'status'=>'success',
-                'message'=>'User login successful'
-            ],200)->cookie('token',$token,60*24*30);
-        }
-        else{
+                'status' => 'success',
+                'message' => 'User registration successful'
+            ], 200);
+
+        } catch (\Exception $e) {
+            // Log any exceptions to the log file for debugging
+            \Log::error('Registration Error: ' . $e->getMessage());
             return response()->json([
-                'status'=>'failed',
-                'message'=>'User login failed'
-            ],'401');
+                'status' => 'failed',
+                'message' => 'User registration failed'
+            ], 500);
         }
     }
+
+    public function userLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => $validator->errors()
+            ], 400);
+        }
+
+        // Fetch the user based on the email
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (  $user->password === $request->input('password') ||  // Plain text check
+            Hash::check($request->input('password'), $user->password) ) {
+            // Password matches, generate a token
+            $token = JWTToken::CreateToken($user->email, $user->id, $user->role);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User login successful'
+            ], 200)->cookie('token', $token, 60 * 24 * 30); // Token stored as a cookie
+        } else {
+            // Authentication failed
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid email or password'
+            ], 401);
+        }
+    }
+
     function sendOtpCode(Request $request){
         $email = $request->input('email');
         $otp = rand(1000,9999);

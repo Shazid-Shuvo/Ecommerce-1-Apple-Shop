@@ -32,32 +32,29 @@
 
     async function onRegistration() {
 
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
 
-        if(email.length===0){
-            errorToast('Email is required')
+    if (email.length === 0) {
+        errorToast('Email is required')
+    } else if (password.length === 0) {
+        errorToast('Password is required')
+    } else {
+        showLoader();
+        let res = await axios.post("/user-registration", {
+            email: email,
+            password: password
+        })
+        hideLoader();
+        if (res.status === 200 && res.data['status'] === 'success') {
+            successToast(res.data['message']);
+            setTimeout(function () {
+                window.location.href = '/userLogin'
+            }, 2000)
+        } else {
+            errorToast(res.data['message'])
         }
-        else if(password.length===0){
-            errorToast('Password is required')
-        }
-        else{
-            showLoader();
-            let res=await axios.post("/user-registration",{
-                email:email,
-                password:password
-            })
-            hideLoader();
-            if(res.status===200 && res.data['status']==='success'){
-                successToast(res.data['message']);
-                setTimeout(function (){
-                    window.location.href='/userLogin'
-                },2000)
-            }
-            else{
-                errorToast(res.data['message'])
-            }
-        }
+    }
     }
 </script>
 

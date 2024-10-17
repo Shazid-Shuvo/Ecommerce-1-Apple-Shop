@@ -1,3 +1,4 @@
+
 <header class="header_wrap fixed-top header_with_topbar">
     <div class="top-header">
         <div class="container">
@@ -14,7 +15,7 @@
                     <div class="text-center text-md-end">
                         <ul class="header_list">
                             <li><a href="/PolicyPage?type=about">About</a></li>
-                            <li><a href="">Account</a></li>
+                            <li><a href="/Profile">Account</a></li>
                             <li><button class="btn btn-danger btn-sm mt-2"><a href="/logout">Logout</a></button> </li>
                         </ul>
                     </div>

@@ -10,6 +10,9 @@ use mysql_xdevapi\Exception;
 
 class ProfileController extends Controller
 {
+    function ProfilePage(){
+        return view("pages.profile-page");
+    }
 
     public function CreateProfile(Request $request):JsonResponse
     {
