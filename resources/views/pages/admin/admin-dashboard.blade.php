@@ -4,5 +4,3 @@
     @include('layout.summary')
 
 @endsection
-
-

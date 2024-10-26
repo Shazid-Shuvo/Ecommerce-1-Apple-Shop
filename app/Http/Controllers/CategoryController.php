@@ -7,35 +7,139 @@ use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-
-
-    public function CreateCategory(Request $request):JsonResponse{
-
-        $user_id=$request->header('id');
-        $CategoryName = $request->input('CategoryName');
-        $img=$request->file('image');
-
-        $t=time();
-        $file_name=$img->getClientOriginalName();
-        $img_name="{$t}-{$file_name}";
-        $img_url="uploads/{$img_name}";
-
-        // Upload File
-        $img->move(public_path('uploads'),$img_name);
-
-        $data=Category::create([
-            'categoryName'=>$CategoryName,
-            'categoryImg'=>$img_url,
-            'user_id'=>$user_id
-        ]);
-
-        return ResponseHelper::out('success',$data,200);
+    function categoryPage():View{
+        return view('pages.admin.category-page');
     }
+    function AddCategoryPage():View{
+        return view('pages.admin.add-category-page');
+    }
+
     public function CategoryList():JsonResponse{
         $data = Category::all();
         return ResponseHelper::out('success',$data,200);
     }
+
+
+    public function AddCategory(Request $request)
+    {
+        // Validate input data
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Check for validation errors
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        // Get headers
+        $user_id = $request->header('id');
+        $role = $request->header('role');
+
+        // Check if user is admin
+        if ($role !== 'admin') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Unauthorized access'
+            ], 401);
+        }
+
+        // Check if image file is present
+        if (!$request->hasFile('image')) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Image is required'
+            ], 400);
+        }
+
+        try {
+            // Process the image file
+            $img = $request->file('image');
+            $t = time();
+            $file_name = $img->getClientOriginalName();
+            $img_name = "{$user_id}-{$t}-{$file_name}";
+            $img_url = "uploads/{$img_name}";
+
+            // Upload the image to the public/uploads directory
+            $img->move(public_path('uploads'), $img_name);
+
+            // Save product to the database
+            $Category = Category::create([
+                'categoryName' => $request->input('name'),
+                'categoryImg' => $img_url,
+                'user_id' => $user_id
+            ]);
+
+
+            // Return success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Category created successfully',
+                'product' => $Category
+            ], 201);
+        } catch (\Exception $e) {
+            // Handle exceptions and return error response
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function UpdateCategory(Request $request){
+
+        $user_id=$request->header('id');
+        $Category_id=$request->input('id');
+
+        if ($request->hasFile('image')) {
+
+            // Upload New File
+            $img=$request->file('image');
+            $t=time();
+            $file_name=$img->getClientOriginalName();
+            $img_name="{$user_id}-{$t}-{$file_name}";
+            $img_url="uploads/{$img_name}";
+            $img->move(public_path('uploads'),$img_name);
+
+            // Delete Old File
+            $filePath=$request->input('file_path');
+            File::delete($filePath);
+
+            // Update Product
+
+            return Category::where('id',$Category_id)->where('user_id',$user_id)->update([
+                'categoryName'=>$request->input('name'),
+                'categoryImg'=>$img_url,
+            ]);
+
+        }
+
+        else {
+            return Category::where('id',$Category_id)->where('user_id',$user_id)->update([
+                'categoryName'=>$request->input('name'),
+            ]);
+        }
+
+    }
+
+    function DeleteCategory(Request $request)
+    {
+        $user_id=$request->header('id');
+        $category_id=$request->input('id');
+        $filePath=$request->input('file_path');
+        File::delete($filePath);
+        return Category::where('id',$category_id)->where('user_id',$user_id)->delete();
+
+    }
+
 }

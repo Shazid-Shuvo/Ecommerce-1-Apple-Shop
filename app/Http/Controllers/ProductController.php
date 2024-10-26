@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\ResponseHelper;
+use App\Models\Brand;
 use App\Models\CustomerProfile;
 use App\Models\Product;
 use App\Models\ProductCart;
@@ -12,9 +13,13 @@ use App\Models\ProductSlider;
 use App\Models\ProductWish;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
+    function ProductPage(){
+        return view('pages.admin.product-page');
+    }
     function CartListPage(){
         return view('pages.cart-list-page');
     }
@@ -27,6 +32,11 @@ class ProductController extends Controller
     }
     function ProductDetailsPage(){
         return view('pages.product-details-page');
+    }
+
+    public function ProductList():JsonResponse{
+        $data = Product::all();
+        return ResponseHelper::out('success',$data,200);
     }
   public function ListProductByCategory(Request $request):JsonResponse{
        $data=Product::where('category_id',$request->id)->with('brand','category')->get();
@@ -52,6 +62,16 @@ class ProductController extends Controller
         $data=ProductDetails::where('product_id',$request->id)->with('product','product.category','product.brand')->get();
         return ResponseHelper::out('success',$data,200);
     }
+    public function ProductById(Request $request): JsonResponse
+    {
+        $data = Product::where('id', $request->input('id'))->first(); // Return a single product
+        if ($data) {
+            return ResponseHelper::out('success', $data, 200);
+        } else {
+            return ResponseHelper::out('error', 'Product not found', 404);
+        }
+    }
+
 
     public function ListReviewProduct(Request $request):JsonResponse{
       $data = ProductReview::where('product_id',$request->product_id)->
@@ -167,5 +187,6 @@ class ProductController extends Controller
         )->delete();
         return ResponseHelper::out('success',$data,200);
     }
+
 
 }

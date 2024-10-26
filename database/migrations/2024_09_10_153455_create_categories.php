@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('categoryName',50);
             $table->string('categoryImg',100);
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('id')->references('id')->on('users')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

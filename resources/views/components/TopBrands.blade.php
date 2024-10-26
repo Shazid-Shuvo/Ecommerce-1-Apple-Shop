@@ -23,7 +23,8 @@
         hideLoader();
         $("#TopBrandItem").empty()
         res.data['data'].forEach((item,i)=>{
-            let EachItem= `<div class="brand_allign">
+            let EachItem= `<div class="p-2 col-2">
+                              <div class="brand_allign">
                 <div class="item">
                     <div class="categories_box">
                         <a href="/ProductByBrandPage?id=${item['id']}">

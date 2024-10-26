@@ -1,5 +1,4 @@
-@extends('layout.app')
-@include('layout.side-nav')
+@extends('layout.side-nav')
 @section('content')
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -9,8 +8,8 @@
                         <h4>Add New Product</h4>
                     </div>
                     <div class="card-body">
-                        <form enctype="multipart/form-data" id="save-form">
-                            @csrf
+                      <form enctype="multipart/form-data" id="save-form">
+
                             <!-- Name -->
                             <div class="mb-3">
                                 <label for="name" class="form-label">Product Name</label>
@@ -59,6 +58,17 @@
                                 <input type="number" name="star" id="star" class="form-control" step="0.1" max="5" min="0" placeholder="Enter star rating (0-5)">
                             </div>
 
+
+                            <div class="mb-3">
+                                <br/>
+                                <img class="w-15" id="newImg" src="{{asset('images/default.jpg')}}"/>
+                                <br/>
+
+                                <label class="form-label">Image</label>
+                                <input oninput="newImg.src=window.URL.createObjectURL(this.files[0])" type="file" class="form-control" id="image">
+
+                            </div>
+
                             <!-- Remark -->
                             <div class="mb-3">
                                 <label for="remark" class="form-label">Remark</label>
@@ -73,35 +83,27 @@
                                 </select>
                             </div>
 
-                            <!-- Image Upload -->
-                            <div class="mb-3">
-                                <img class="w-15" id="newImg" src="{{asset('images/default.jpg')}}"/>
-                                <br/>
-
-                                <label class="form-label">Image</label>
-                                <input oninput="newImg.src=window.URL.createObjectURL(this.files[0])" type="file" class="form-control" id="image">
-
-                            </div>
-
                             <!-- Category -->
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <select type="text" class="form-control form-select" id="productCategory">
+                                <select class="form-control form-select" id="productCategory" required>
                                     <option value="">Select Category</option>
                                 </select>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Brand</label>
-                                <select type="text" class="form-control form-select" id="brand">
-                                    <option value="">Select Brand</option>
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Brand</label>
+                            <select class="form-control form-select" id="productBrand" required>
+                                <option value="">Select Brand</option>
+                            </select>
+                        </div>
 
-                            <div class="text-center">
-                                <button type="submit"onclick="submitProductForm() " class="btn btn-primary">Add Product</button>
+
+
+                        <div class="text-center">
+                                <button type="submit" onclick="AddProductForm() " class="btn btn-primary">Add Product</button>
                             </div>
-                        </form>
+                   </form>
                     </div>
                 </div>
             </div>
@@ -110,101 +112,132 @@
 
     <script>
 
-            FillCategoryDropDown();
-            FillBrandDropDown();
-            async function FillCategoryDropDown(){
+        FillCategoryDropDown();
+        FillBrandDropDown();
+        async function FillCategoryDropDown(){
             let res = await axios.get("/CategoryList")
             res.data.data.forEach(function (item,i) {
-            let option=`<option value="${item['id']}">${item['categoryName']}</option>`
-            $("#productCategory").append(option);
-        })
+                let option=`<option  value="${item['id']}">${item['categoryName']}</option>`
+                $("#productCategory").append(option);
+            })
         }
-            async function FillBrandDropDown(){
-                let res = await axios.get("/BrandList")
+
+        async function FillBrandDropDown() {
+            try {
+                let res = await axios.get("/BrandList"); // Get brand list from server
+
                 res.data.data.forEach(function (item,i) {
                     let option=`<option value="${item['id']}">${item['brandName']}</option>`
-                    $("#brand").append(option);
+                    $("#productBrand").append(option);
                 })
+
+            } catch (error) {
+                console.error("Error fetching brands:", error);
             }
+        }
 
-            async function submitProductForm() {
-                try {
-                    // Get input values
-                    let name = document.getElementById('name').value;
-                    let title = document.getElementById('title').value;
-                    let shortDes = document.getElementById('short_des').value;
-                    let price = document.getElementById('price').value;
-                    let discount = document.getElementById('discount').value;
-                    let discountPrice = document.getElementById('discount_price').value;
-                    let stock = document.getElementById('stock').value;
-                    let star = document.getElementById('star').value;
-                    let remark = document.getElementById('remark').value;
-                    let category = document.getElementById('productCategory').value;
-                    let brand = document.getElementById('brand').value;
-                    let productImg = document.getElementById('image').files[0];
 
-                    // Validation checks
-                    if (category.length === 0) {
-                        errorToast("Product Category Required!");
-                    } else if (name.length === 0) {
-                        errorToast("Product Name Required!");
-                    } else if (price.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (category.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (title.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (shortDes.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (discount.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (discountPrice.length === 0) {
-                        errorToast("Product Price Required!");
-                    } else if (stock.length === 0) {
-                        errorToast("Product Price Required!");
-                    }
-                    else if (!productImg) {
-                        errorToast("Product Image Required!");
-                    } else {
-                        // Create FormData object to send via POST request
-                        let formData = new FormData();
-                        formData.append('name', name);
-                        formData.append('title', title);
-                        formData.append('short_des', shortDes);
-                        formData.append('price', price);
-                        formData.append('discount', discount);
-                        formData.append('discount_price', discountPrice);
-                        formData.append('stock', stock);
-                        formData.append('star', star);
-                        formData.append('remark', remark);
-                        formData.append('category', category);
-                        formData.append('brand', brand);
-                        formData.append('image', productImg)
+        function getSelectedBrand() {
+            let brand = document.getElementById('brand').value;
 
-                        const config = {
-                            headers: {
-                                'content-type': 'multipart/form-data'
-                            }
-                        };
+            if (brand) {
+                console.log("Selected Brand ID:", brand);
+            } else {
+                console.log("No brand selected");
+            }
+        }
 
-                        showLoader();
-                        let res = await axios.post("/AddProduct", formData, config);
-                        hideLoader();
+        // async function FillBrandDropDown(){
+        //     let res = await axios.get("/BrandList")
+        //     res.data.data.forEach(function (item,i) {
+        //         let option=`<option value="${item['id']}">${item['brandName']}</option>`
+        //         $("#brand").append(option);
+        //     })
+        // }
 
-                        if (res.status === 201) {
-                            successToast('Product created successfully!');
-                            // Reset form
-                        } else {
-                            errorToast("Request failed!");
+        async function AddProductForm() {
+            // try {
+                // Get input values
+                let name = document.getElementById('name').value;
+                let title = document.getElementById('title').value;
+                let shortDes = document.getElementById('short_des').value;
+                let price = document.getElementById('price').value;
+                let discount = document.getElementById('discount').value;
+                let discountPrice = document.getElementById('discount_price').value;
+                let stock = document.getElementById('stock').value;
+                let star = document.getElementById('star').value;
+                let remark = document.getElementById('remark').value;
+                let category = document.getElementById('productCategory').value;
+                let brand = document.getElementById('productBrand').value;
+                let productImg = document.getElementById('image').files[0];
+
+                alert(category);
+                alert(brand);
+
+                if(category.length === 0) {
+                    errorToast("Product Category Required!");
+                } else if (name.length === 0) {
+                    errorToast("Product Name Required!");
+                } else if (price.length === 0) {
+                    errorToast("Product Price Required!");
+                } else if (title.length === 0) {
+                    errorToast("Product Title Required!");
+                } else if (shortDes.length === 0) {
+                    errorToast("Product Description Required!");
+                } else if (discount.length === 0) {
+                    errorToast("Product Discount Required!");
+                } else if (discountPrice.length === 0) {
+                    errorToast("Product Discount Price Required!");
+                } else if (stock.length === 0) {
+                    errorToast("Product Stock Required!");
+                } else if (!productImg) {
+                    errorToast("Product Image Required!");
+                } else {
+                    // Create FormData object to send via POST request
+                    let formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('title', title);
+                    formData.append('short_des', shortDes);
+                    formData.append('price', price);
+                    formData.append('discount', discount);
+                    formData.append('discount_price', discountPrice);
+                    formData.append('stock', stock);
+                    formData.append('star', star);
+                    formData.append('remark', remark);
+                    formData.append('category', category);
+                    formData.append('brand', brand);
+                    formData.append('image', productImg);
+
+                    const config = {
+                        headers: {
+                            'content-type': 'multipart/form-data',
+
                         }
+                    };
+
+                    // showLoader();
+                    // console.log("Submitting product data...");
+
+                    let res = await axios.post("/AddProduct", formData, config);
+                    // hideLoader();
+
+                    if (res.status === 200 || res.status === 201) {
+                        successToast('Product created successfully!');
+                        // document.getElementById("save-form").reset();  // Reset form
+                    } else {
+                        errorToast(res.message);
                     }
-                } catch (e) {
-                    alert(e);
                 }
-            }
+            // } catch (e) {
+            //     alert(e);
+            //     console.error("Error:", e ,res.messa);
+            // }
+        }
 
 
     </script>
 
-@endsection
+    @endsection
+
+
 

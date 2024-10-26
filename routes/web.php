@@ -38,7 +38,7 @@ Route::post('/user-update',[UserController::class,'updateProfile'])
 //API ROUTES/ Brand List
 
 Route::get("/BrandList",[BrandController::class,'BrandList']);
-Route::post("/CreateBrand",[BrandController::class,'CreateBrand']);
+
 
 // Category List
 
@@ -46,6 +46,7 @@ Route::get("/CategoryList",[CategoryController::class,'CategoryList']);
 
 // Product List
 
+Route::get("/ProductList",[ProductController::class,'ProductList']);
 Route::get("/ListProductByCategory/{id}",[ProductController::class,'ListProductByCategory']);
 Route::get("/ListProductByBrand/{id}",[ProductController::class,'ListProductByBrand']);
 Route::get("/ListProductByRemark/{remark}",[ProductController::class,'ListProductByRemark']);
@@ -80,6 +81,7 @@ Route::get("/ListProductSlider",[ProductController::class,'ListProductSlider']);
 
 // Product Details
 
+Route::post("/ProductById",[ProductController::class,'ProductById']);
 Route::get("/ProductDetailsById/{id}",[ProductController::class,'ProductDetailsById']);
 Route::get("/ListReviewProduct/{product_id}",[ProductController::class,'ListReviewProduct']);
 
@@ -124,12 +126,27 @@ Route::get("/Profile",[ProfileController::class,'ProfilePage'])->middleware(Toke
    //admin API
 
     Route::post('/admin-login', [AdminController::class,'AdminLogin']);
-    Route::post('/AddProduct', [AdminController::class,'AddProduct']);
 
-//Admin Pages
+    Route::post('/AddProduct', [AdminController::class,'AddProduct'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/UpdateProduct', [AdminController::class,'updateProduct'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/DeleteProduct', [AdminController::class,'deleteProduct'])->middleware(TokenVerificationMiddleware::class);
+
+    Route::post('/AddBrand', [BrandController::class,'AddBrand'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/UpdateBrand', [BrandController::class,'UpdateBrand'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/DeleteBrand', [BrandController::class,'DeleteBrand'])->middleware(TokenVerificationMiddleware::class);
+
+    Route::post('/AddCategory', [CategoryController::class,'AddCategory'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/UpdateCategory', [CategoryController::class,'UpdateCategory'])->middleware(TokenVerificationMiddleware::class);
+    Route::post('/DeleteCategory', [CategoryController::class,'DeleteCategory'])->middleware(TokenVerificationMiddleware::class);
+
+    //Admin Pages
 
     Route::get('/adminLogin', [AdminController::class,'AdminLoginPage']);
-    Route::get('/AdminDashboard', [AdminController::class,'AdminDashboard'])->middleware(TokenVerificationMiddleware::class);;
-    Route::get('/AddProduct', [AdminController::class,'AddProductPage'])->middleware(TokenVerificationMiddleware::class);;
-//Logout
+    Route::get('/AdminDashboard', [AdminController::class,'AdminDashboard'])->middleware(TokenVerificationMiddleware::class);
+    Route::get('/AddProductPage', [AdminController::class,'AddProductPage'])->middleware(TokenVerificationMiddleware::class);
+    Route::get('/BrandPage', [AdminController::class,'BrandPage'])->middleware(TokenVerificationMiddleware::class);
+    Route::get('/CategoryPage', [CategoryController::class,'CategoryPage'])->middleware(TokenVerificationMiddleware::class);
+    Route::get('/ProductPage', [ProductController::class,'ProductPage'])->middleware(TokenVerificationMiddleware::class);
+    //Logout
+
 Route::get('/logout',[UserController::class,'userLogout']);
